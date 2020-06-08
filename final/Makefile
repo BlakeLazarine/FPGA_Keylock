@@ -6,9 +6,10 @@ FOOTPRINT = ct256
 
 # Files
 FILES = top.v
-FILES += button.v
 FILES += enterDigit.v
 FILES += keylist.v
+FILES += pattern.v
+FILES += compare.v
 
 .PHONY: all clean burn
 
