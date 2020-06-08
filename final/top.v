@@ -132,16 +132,18 @@ module top (
             led3 = 0;
 
     	led5 = checkValidUC;
-	led6 = ValidUC;
-	led7 = confirmUC;
+	    led6 = ValidUC;
+	    led7 = confirmUC;
+      if(rdy & (button == 8) & validUC)
+        led8 = !led8;
 //	led8 = rdy & (button==8);
     end
 
 //   assign led2 = (typed == 0);
-  
+  /*
     always @ (posedge rdy) begin
         led8 = (button==8);
 
     end
-
+*/
 endmodule
