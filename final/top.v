@@ -70,9 +70,17 @@ module top (
     wire recordKeys = checkUC | checkPC | checkValidUC;
     keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .enable(recordKeys), .typed(typed));
 
+    reg [31:0] compareReg = 0;
+    compareMod (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidNewUC));
+
     always @ (posedge hwclk) begin
-        if(checkValidUC)
+        if(checkValidUC) begin
             maybeNewUC <= typed;
+            compareReg = typed;
+        end else if(checkUC)
+            compareReg = UC;
+        else if(checkPC)
+            compareReg = PC;
 
 
         if(error) begin
