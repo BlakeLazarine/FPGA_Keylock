@@ -10,7 +10,6 @@ module top (
     input keypad_c1, keypad_c2, keypad_c3,
     );
     /* I/O */
-    input hwclk;
 
 	/* Button Module */
     reg [3:0] button;
@@ -38,13 +37,18 @@ module top (
 
     reg [31:0] ontime, offtime;
     reg [7:0] patternReps;
-    reg patternOn, patternBright, patternDone;
+    reg patternOn = 0;
+    reg patternBright, patternDone;
     pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime),
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
-    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3,
-      ValidNewUC, match, reset, error;
-    controller contol (
+    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match;
+    reg ValidNewUC;
+    reg reset = 1;
+    reg prevBState = 0;
+    wire rdy = bstate & !prevBState;
+
+    controller control (
       .CheckPC(checkPC),
       .CheckValidUC(checkValidUC),
       .Chillin(chillin),
@@ -56,10 +60,10 @@ module top (
       .DoneBlink(patternDone),
       .ValidNewUC(ValidNewUC),
       .clk(hwclk),
-      .keypres(button),
+      .keypress(button),
       .match(match),
-      .rdy(bstate), //do tests to see if bstate is high for only 1 clock cycle
-      .reset(reset)
+      .rdy(rdy), //do tests to see if bstate is high for only 1 clock cycle
+      .resetN(reset)
     );
 
     always @ (posedge toggleLED1) begin
@@ -71,9 +75,16 @@ module top (
     keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .enable(recordKeys), .typed(typed));
 
     reg [31:0] compareReg = 0;
-    compareMod (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidNewUC));
+    compareMod comp (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidNewUC));
 
+    reg [7:0] count = 0;
     always @ (posedge hwclk) begin
+	if (count < 10)
+		reset = 1;
+	else
+		reset = 0;
+        prevBState = bstate;
+
         if(checkValidUC) begin
             maybeNewUC <= typed;
             compareReg = typed;
@@ -109,20 +120,23 @@ module top (
         else
             led2 = 0;
 
-        if(openLED2)
+        if(openLED3)
             if(error)
-                led2 = patternBright;
+                led3 = patternBright;
             else
-                led2 = 1;
+                led3 = 1;
         else
-            led2 = 0;
+            led3 = 0;
+    	
+    	led5 = checkValidUC;
+	led6 = validUC;
     end
 
-
 //   assign led2 = (typed == 0);
-    /*
-    always @ (posedge bstate) begin
-        ledOn = !ledOn;
+   /* 
+    always @ (negedge bstate) begin
+        led4 = !led4;
+	
     end*/
 
 endmodule

@@ -10,7 +10,7 @@ FILES += enterDigit.v
 FILES += keylist.v
 FILES += pattern.v
 FILES += compare.v
-
+FILES += FPGA2.v
 .PHONY: all clean burn
 
 all:
