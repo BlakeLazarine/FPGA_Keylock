@@ -15,6 +15,8 @@ module top (
 	/* Button Module */
     reg [3:0] button;
     reg bstate;
+    parameter [31:0] PC = 555116;
+    reg [31:0] UC = 666666;
 
     enterDigit dig(
         // input hardware clock (12 MHz)
@@ -32,16 +34,16 @@ module top (
 
     reg [31:0] typed;
     reg [31:0] typeOutput;
-    keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .reset(1'b0), .typed(typed));
+
 
     reg [31:0] ontime, offtime;
     reg [7:0] patternReps;
     reg patternOn, patternBright, patternDone;
-    pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime), 
+    pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime),
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
     reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3,
-      ValidNewUC, matchPC, matchUC, reset, error;
+      ValidNewUC, match, reset, error;
     controller contol (
       .CheckPC(checkPC),
       .CheckValidUC(checkValidUC),
@@ -55,8 +57,7 @@ module top (
       .ValidNewUC(ValidNewUC),
       .clk(hwclk),
       .keypres(button),
-      .matchPC(matchPC),
-      .matchUC(matchUC),
+      .match(match),
       .rdy(bstate), //do tests to see if bstate is high for only 1 clock cycle
       .reset(reset)
     );
@@ -65,10 +66,31 @@ module top (
         led1 = !led1;
     end
 
-    always @ (posedge hwclk) begin
-        if(error) begin
+    reg [31:0] maybeNewUC = 0;
+    wire recordKeys = checkUC | checkPC | checkValidUC;
+    keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .enable(recordKeys), .typed(typed));
 
+    always @ (posedge hwclk) begin
+        if(checkValidUC)
+            maybeNewUC <= typed;
+
+
+        if(error) begin
+            ontime = 12000000;
+            offtime = 6000000;
+            patternReps = 3;
+            patternOn = 1;
+        end else if(chillin) begin
+            ontime = 2400000;
+            offtime = 2400000;
+            patternReps = 3;
+            patternOn = 1;
+
+            UC = maybeNewUC;
+            maybeNewUC = 0;
         end
+        else
+            patternOn = 0;
 
 
         if(openLED2)
