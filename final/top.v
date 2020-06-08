@@ -43,7 +43,7 @@ module top (
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
     reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match;
-    reg ValidNewUC;
+    reg ValidUC;
     reg reset = 1;
     reg prevBState = 0;
     wire rdy = bstate & !prevBState;
@@ -58,7 +58,7 @@ module top (
       .ToggleLED1(toggleLED1),
       .error(error),
       .DoneBlink(patternDone),
-      .ValidNewUC(ValidNewUC),
+      .ValidUC(ValidUC),
       .clk(hwclk),
       .keypress(button),
       .match(match),
@@ -75,7 +75,7 @@ module top (
     keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .enable(recordKeys), .typed(typed));
 
     reg [31:0] compareReg = 0;
-    compareMod comp (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidNewUC));
+    compareMod comp (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidUC));
 
     reg [7:0] count = 0;
     always @ (posedge hwclk) begin
@@ -127,16 +127,16 @@ module top (
                 led3 = 1;
         else
             led3 = 0;
-    	
+
     	led5 = checkValidUC;
 	led6 = validUC;
     end
 
 //   assign led2 = (typed == 0);
-   /* 
+   /*
     always @ (negedge bstate) begin
         led4 = !led4;
-	
+
     end*/
 
 endmodule
