@@ -1,4 +1,4 @@
-## File last modified by Fizzim: 9:55:45 PM on 6/7/20
+## File last modified by Fizzim: 3:49:36 AM on 6/8/20
 <version>
    14.02.26
 </version>
@@ -342,7 +342,7 @@
          -1
          </page>
       </rdy>
-      <ValidNewUC>
+      <ValidUC>
             <status>
             GLOBAL_FIXED
             </status>
@@ -397,7 +397,7 @@
          <page>
          -1
          </page>
-      </ValidNewUC>
+      </ValidUC>
       <DoneBlink>
             <status>
             GLOBAL_FIXED

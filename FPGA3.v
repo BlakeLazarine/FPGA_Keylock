@@ -1,7 +1,7 @@
-// Created by fizzim.pl version 5.20 on 2020:06:07 at 21:56:03 (www.fizzim.com)
+// Created by fizzim.pl version 5.20 on 2020:06:08 at 11:05:35 (www.fizzim.com)
 
 // Warning T20: 9 bits specified as type "reg".  Type "reg" means they will be included in the state encoding.  With so many bits, this might take a very long time and/or consume large amounts of memory.  Consider converting some of them to type "regdp" or type "flag".  To suppress this message in the future, use "-nowarn T20" 
-module controller (
+module def_name (
   output wire CheckPC,
   output wire CheckValidUC,
   output wire Chillin,
@@ -12,7 +12,7 @@ module controller (
   output wire confirmUC,
   output wire error,
   input wire DoneBlink,
-  input wire ValidNewUC,
+  input wire ValidUC,
   input wire clk,
   input wire [3:0] keypress,
   input wire match,
