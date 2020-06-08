@@ -81,13 +81,13 @@ module top (
 
     reg [7:0] count = 0;
     always @ (posedge hwclk) begin
-	      recordKeys = (checkValidUC ^ prevCheckingValid) ? 0 : checkUC | checkPC | checkValidUC | confirmUC;
+        recordKeys = (checkValidUC ^ prevCheckingValid) ? 0 : checkUC | checkPC | checkValidUC | confirmUC;
         prevCheckingValid <= checkValidUC;
 
         prevBState = bstate;
 
         if(checkValidUC) begin
-            maybeNewUC <= typed;
+            maybeNewUC = typed;
             //compareReg = typed;
         end else if(checkUC)
             compareReg = UC;
@@ -133,13 +133,15 @@ module top (
 
     	led5 = checkValidUC;
 	led6 = ValidUC;
+	led7 = confirmUC;
+//	led8 = rdy & (button==8);
     end
 
 //   assign led2 = (typed == 0);
-   /*
-    always @ (negedge bstate) begin
-        led4 = !led4;
+  
+    always @ (posedge rdy) begin
+        led8 = (button==8);
 
-    end*/
+    end
 
 endmodule
