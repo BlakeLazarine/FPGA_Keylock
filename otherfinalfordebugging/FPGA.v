@@ -1,4 +1,4 @@
-// Created by fizzim.pl version 5.20 on 2020:06:08 at 15:08:17 (www.fizzim.com)
+// Created by fizzim.pl version 5.20 on 2020:06:08 at 15:50:50 (www.fizzim.com)
 
 // Warning T20: 9 bits specified as type "reg".  Type "reg" means they will be included in the state encoding.  With so many bits, this might take a very long time and/or consume large amounts of memory.  Consider converting some of them to type "regdp" or type "flag".  To suppress this message in the future, use "-nowarn T20"
 module controller (
@@ -104,10 +104,10 @@ module controller (
       ReproPhase2     : begin
         // Warning P3: State ReproPhase2 has multiple exit transitions, and transition trans18 has no defined priority
         // Warning P3: State ReproPhase2 has multiple exit transitions, and transition trans26 has no defined priority
-        if (rdy & (keypress == 8) & validUC) begin
+        if (rdy & (keypress == 8) & ValidUC) begin
           nextstate = ReproPhase3;
         end
-        else if (rdy&((keypress==7) | ((keypress == 8) & !validUC))) begin
+        else if (rdy&((keypress==7) | ((keypress == 8) & !ValidUC))) begin
           nextstate = BadRepro;
         end
         else begin

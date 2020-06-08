@@ -1,4 +1,4 @@
-## File last modified by Fizzim: 3:06:15 PM on 6/8/20
+## File last modified by Fizzim: 3:50:20 PM on 6/8/20
 <version>
    14.02.26
 </version>
@@ -8173,7 +8173,7 @@ fzm_globalTable
             ABS
             </status>
          <value>
-         rdy & (keypress == 8) & validUC
+         rdy & (keypress == 8) & ValidUC
             <status>
             LOCAL
             </status>
@@ -10228,7 +10228,7 @@ fzm_globalTable
             ABS
             </status>
          <value>
-         rdy&((keypress==7) | ((keypress == 8) & !validUC))
+         rdy&((keypress==7) | ((keypress == 8) & !ValidUC))
             <status>
             LOCAL
             </status>
