@@ -106,11 +106,11 @@ module top (
         end else if(chillin) begin
             ontime = 2400000;
             offtime = 2400000;
-            patternReps = 3;
+            patternReps = 5;
             patternOn = 1;
 
-            UC = maybeNewUC;
-            maybeNewUC = 0;
+            UC <= maybeNewUC;
+            //maybeNewUC = 0;
         end
         else
             patternOn = 0;
@@ -125,19 +125,15 @@ module top (
             led2 = 0;
 
         if(openLED3)
-            if(error)
+            if(error | chillin)
                 led3 = patternBright;
             else
                 led3 = 1;
         else
             led3 = 0;
 
-    	led5 = checkValidUC;
-	    led6 = ValidUC;
-	    led7 = confirmUC;
-      if(rdy & (button == 8) & ValidUC)
-        led8 = !led8;
-//	led8 = rdy & (button==8);
+	//led8 = match;
+	//led7 = chillin;
     end
 
 //   assign led2 = (typed == 0);
