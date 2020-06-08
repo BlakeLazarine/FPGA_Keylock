@@ -43,7 +43,7 @@ module top (
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
     reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match;
-    reg ValidUC;
+    reg ValidUC, confirmUC;
     reg reset = 1;
     reg prevBState = 0;
     wire rdy = bstate & !prevBState;
@@ -63,7 +63,8 @@ module top (
       .keypress(button),
       .match(match),
       .rdy(rdy), //do tests to see if bstate is high for only 1 clock cycle
-      .resetN(reset)
+      .resetN(reset),
+      .confirmUC(confirmUC)
     );
 
     always @ (posedge toggleLED1) begin
@@ -71,7 +72,8 @@ module top (
     end
 
     reg [31:0] maybeNewUC = 0;
-    wire recordKeys = checkUC | checkPC | checkValidUC;
+    reg recordKeys = 0;
+    reg prevCheckingValid = 0;
     keyList list(.hwclk(hwclk), .key(button), .button_pressed(bstate), .enable(recordKeys), .typed(typed));
 
     reg [31:0] compareReg = 0;
@@ -79,19 +81,20 @@ module top (
 
     reg [7:0] count = 0;
     always @ (posedge hwclk) begin
-	if (count < 10)
-		reset = 1;
-	else
-		reset = 0;
+	      recordKeys = (checkValidUC ^ prevCheckingValid) ? 0 : checkUC | checkPC | checkValidUC | confirmUC;
+        prevCheckingValid <= checkValidUC;
+
         prevBState = bstate;
 
         if(checkValidUC) begin
             maybeNewUC <= typed;
-            compareReg = typed;
+            //compareReg = typed;
         end else if(checkUC)
             compareReg = UC;
         else if(checkPC)
             compareReg = PC;
+        else if (confirmUC)
+            compareReg = maybeNewUC;
 
 
         if(error) begin
@@ -129,7 +132,7 @@ module top (
             led3 = 0;
 
     	led5 = checkValidUC;
-	led6 = validUC;
+	led6 = ValidUC;
     end
 
 //   assign led2 = (typed == 0);
