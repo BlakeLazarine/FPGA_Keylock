@@ -80,6 +80,12 @@ module top (
     compareMod comp (.hwclk(hwclk), .in(typed), .compare(compareReg), .match(match), .validUC(ValidUC));
 
     reg [7:0] count = 0;
+
+    reg enableSender = 0;
+    reg doneSending;
+    sender send (.hwclk(hwclk), .num(button), .enabled(enableSender), .done(doneSending),
+        .out0(led6), .out1(led7), .out2(led8), .controlOut(led5));
+
     //led8 = 0;
     always @ (posedge hwclk) begin
         recordKeys = (checkValidUC ^ prevCheckingValid) ? 0 : checkUC | checkPC | checkValidUC | confirmUC;
@@ -137,6 +143,8 @@ module top (
                 led3 = 1;
         else
             led3 = 0;
+
+        enableSender = (rdy) ? 1 : !doneSending;
 
     end
 endmodule
