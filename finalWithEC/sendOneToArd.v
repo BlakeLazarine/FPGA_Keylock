@@ -29,9 +29,9 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
                 out1 = 0;
                 out2 = 0;
             end
-            controlOut = enabled & (!complete);
+            controlOut = enabled & (counter < holdTime);
 
-            if(counter > holdTime)
+            if(counter > holdTime*2)
                 complete = 1;
 
             counter = counter + 1;

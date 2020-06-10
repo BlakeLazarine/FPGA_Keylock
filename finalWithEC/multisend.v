@@ -16,6 +16,7 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
     reg [3:0] ch = 0;
     reg enableSender = 0;
     reg doneSending;
+    reg doneSendingReg = 0;
     sender send (.hwclk(hwclk), .num(ch), .enabled(enableSender), .done(doneSending),
         .out0(out0), .out1(out1), .out2(out2), .controlOut(controlOut));
 
@@ -36,15 +37,34 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
 
     always @ (posedge hwclk) begin
         if(enabled) begin
-            if(!prevEnabled) begin
-                num10 = num%10;
-		num100 = num%100;
-		num1000 = num%1000;
-		num10000 = num%10000;
-		num100000 = num%100000;
-		num1000000 = num%1000000;
-                
-		numbers[15] = num10[0];
+            if(!completed) begin
+                rdy = prevDoneSending & doneSending;
+
+                enableSender = (rdy) ? 1 : !doneSending;
+                if(doneSending) begin
+                    ch[0] = numbers[3 * i];
+                    ch[1] = numbers[3 * i + 1];
+                    ch[2] = numbers[3 * i + 2];
+
+                    i <= i+1;
+                end
+	        if(i == 5) begin
+                    completed = 1;
+		    prevDoneSending = 0;
+		    doneSendingReg = 0;
+	        end else
+                    prevDoneSending = doneSending;
+            end
+        end
+	else begin
+		num10 = num%10;
+                num100 = (num/10)%10;
+                num1000 = (num/100)%10;
+                num10000 = (num/1000)%10;
+                num100000 = (num/10000)%10;
+                num1000000 = (num/100000)%10;
+
+                numbers[15] = num10[0];
                 numbers[16] = num10[1];
                 numbers[17] = num10[2];
 
@@ -72,23 +92,10 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
                 ch = 0;
                 rdy = 1;
                 completed = 0;
-            end
-            else if(!completed)
-                rdy = prevDoneSending;
-
-            enableSender = (rdy) ? 1 : !doneSending;
-            if(doneSending & !completed) begin
-                ch[0] <= numbers[3 * i];
-                ch[1] <= numbers[3 * i + 1];
-                ch[2] <= numbers[3 * i + 2];
-
-                i <= i+1;
-            end
-            if(i == 5)
-                completed <= 1;
-
-        end
-        prevDoneSending = doneSending;
-        prevEnabled = enabled;
+		prevDoneSending = 1;
+		doneSendingReg = 0;
+		enableSender = 0;
+	end
+       prevEnabled <= enabled;
     end
 endmodule

@@ -130,6 +130,12 @@ module top (
         led3 = openLED3 & ((error|chillin) ? patternBright : 1);
 
         enableSender = (rdy) ? 1 : !doneSending;
+        
+//	led4 = sendSecret;
 
+    end
+
+    always @(posedge sendSecret) begin
+        led4 = !led4;
     end
 endmodule
