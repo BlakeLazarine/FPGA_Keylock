@@ -1,4 +1,4 @@
-module multisend (hwclk, num, enabled, rdy, done, out0, out1, out2, controlOut);
+module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
     /* I/O */
     input hwclk;
     input [31:0] num;
@@ -17,7 +17,7 @@ module multisend (hwclk, num, enabled, rdy, done, out0, out1, out2, controlOut);
     reg enableSender = 0;
     reg doneSending;
     sender send (.hwclk(hwclk), .num(ch), .enabled(enableSender), .done(doneSending),
-        .out0(led6), .out1(led7), .out2(led8), .controlOut(led5));
+        .out0(out0), .out1(out1), .out2(out2), .controlOut(controlOut));
 
     reg prevEnabled = 0;
     reg [29:0] numbers = 0;
@@ -42,19 +42,21 @@ module multisend (hwclk, num, enabled, rdy, done, out0, out1, out2, controlOut);
                 i <= 0;
                 ch <= 0;
                 rdy <= 1;
+		complete <= 0;
             end
             else
                 rdy = prevDoneSending;
 
             enableSender = (rdy) ? 1 : !doneSending;
-            if(doneSending) begin
+            if(doneSending & !completed) begin
                 ch[0] = numbers[3 * i];
                 ch[1] = numbers[3 * i + 1];
                 ch[2] = numbers[3 * i + 2];
 
                 i <= i+1;
             end
-
+            if(i == 9)
+                completed = 1;
 
         end
         prevDoneSending = doneSending;

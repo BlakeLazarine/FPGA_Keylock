@@ -23,6 +23,7 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
                 out0 = num[0];
                 out1 = num[1];
                 out2 = num[2];
+            end
             else begin
                 out0 = 0;
                 out1 = 0;

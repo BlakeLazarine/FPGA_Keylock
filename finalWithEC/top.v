@@ -93,20 +93,11 @@ module top (
 
         prevBState = bstate;
 
-        if(checkValidUC) begin
-            maybeNewUC = typed;
-            //compareReg = typed;
-        end else if(checkUC)
-            compareReg = UC;
-        else if(checkPC)
-            compareReg = PC;
-        else if (confirmUC)
-            compareReg = maybeNewUC;
-        /*if(checkValidUC)
+	if(checkValidUC)
             maybeNewUC = typed;
         else
             compareReg = (checkUC) ? UC : ((checkPC) ? PC : maybeNewUC);
-        */
+        
 
 
         if(error) begin
@@ -126,23 +117,9 @@ module top (
         else
             patternOn = 0;
 
-        //led2 = openLED2 & ((error) ? patternBright : 1);
-        if(openLED2)
-            if(error)
-                led2 = patternBright;
-            else
-                led2 = 1;
-        else
-            led2 = 0;
+        led2 = openLED2 & ((error) ? patternBright : 1);
 
-        //led3 = openLED3 & ((error|chillin) ? patternBright : 1);
-        if(openLED3)
-            if(error | chillin)
-                led3 = patternBright;
-            else
-                led3 = 1;
-        else
-            led3 = 0;
+        led3 = openLED3 & ((error|chillin) ? patternBright : 1);
 
         enableSender = (rdy) ? 1 : !doneSending;
 

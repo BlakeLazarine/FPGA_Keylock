@@ -12,6 +12,8 @@ FILES += pattern.v
 FILES += compare.v
 FILES += FPGA.v
 FILES += sendOneToArd.v
+FILES += multisend.v
+
 .PHONY: all clean burn
 
 all:
