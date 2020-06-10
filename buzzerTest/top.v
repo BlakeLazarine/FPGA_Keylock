@@ -14,12 +14,17 @@ module top (hwclk, led1, led2, led3, led4, led5, led6, led7, led8, buzz);
     /* Counter register */
     reg [31:0] counter = 32'b0;
 
-    parameter [31:0] halfperiod = 6000;
+    reg [31:0] halfperiod = 20000;
 
     /* always */
     always @ (posedge hwclk) begin
         buzz = counter < halfperiod;
-        counter <= (counter > 2 * halfperiod) ? 0 : counter + 1;
+	if(counter > 2 * halfperiod) begin
+		halfperiod <= halfperiod - 1;
+		counter <= 0;
+	end
+        else
+		counter <= counter + 1;
     end
 
 endmodule
