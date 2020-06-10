@@ -34,16 +34,12 @@ module top (
 
     reg [31:0] typed;
     reg [31:0] typeOutput;
-
-
     reg [31:0] ontime, offtime;
     reg [7:0] patternReps;
     reg patternOn = 0;
     reg patternBright, patternDone;
     pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime),
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
-
-
 
 
     reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match, sendSecret, doneSend;
@@ -78,7 +74,7 @@ module top (
     reg multout0, multout1, multout2, multoutcontrol;
     wire ableToSend = sendSecret & !locked;
     multisend mult(.hwclk(hwclk), .num(PC), .enabled(ableToSend), .out0(multout0), .out1(multout1), .out2(multout2), .controlOut(multoutcontrol), .done(doneSend));
-    
+
     assign led1 = locked;
     always @ (posedge toggleLED1) begin
         locked = !locked;
@@ -96,7 +92,7 @@ module top (
 
     reg enableSender = 0;
     reg sendout0, sendout1, sendout2, sendoutcontrol, active;
-    
+
     sender send (.hwclk(hwclk), .num(button), .enabled(enableSender),
         .out0(sendout0), .out1(sendout1), .out2(sendout2), .controlOut(sendoutcontrol), .active(active));
 
@@ -107,7 +103,7 @@ module top (
 
         prevBState = bstate;
 
-	if(checkValidUC)
+	      if(checkValidUC)
             maybeNewUC = typed;
         else
             compareReg = (checkUC) ? UC : ((checkPC) ? PC : maybeNewUC);
@@ -134,7 +130,7 @@ module top (
         led3 = openLED3 & ((error|chillin) ? patternBright : 1);
 
         enableSender = (rdy) ? 1 : active;
-	
+
         led6 = (ableToSend) ? multout0 : sendout0;
         led7 = (ableToSend) ? multout1 : sendout1;
         led8 = (ableToSend) ? multout2 : sendout2;
@@ -144,9 +140,6 @@ module top (
         ardu1 = (ableToSend) ? multout1 : sendout1;
         ardu2 = (ableToSend) ? multout2 : sendout2;
         arduControl = (ableToSend) ? multoutcontrol : sendoutcontrol;
-
-
-
 
     end
 endmodule

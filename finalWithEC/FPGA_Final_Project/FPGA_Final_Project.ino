@@ -1,11 +1,11 @@
 #include <LiquidCrystal.h>
 
-int fpga0 = A0;
-int fpga1 = A1;
-int fpga2 = A2;
-int rdy = A3;
+int fpga0 = A1;
+int fpga1 = A2;
+int fpga2 = A3;
+int rdy = A4;
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2); //LCD Pins
+LiquidCrystal lcd(7, 6, 5, 4, 3, 2); //LCD Pins
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,45 +32,25 @@ void loop() {
   if(analogRead(rdy) >= readInThreshold)
   {
     rdyIsHigh++;
-    if(analogRead(fpga0) >= readInThreshold)
-    {
-      bit0 = 1;
-    }
-    if(analogRead(fpga0) < readInThreshold)
-    {
-      bit0 = 0;
-    }
-    if(analogRead(fpga1) >= readInThreshold)
-    {
-      bit1 = 1;
-    }
-    if(analogRead(fpga1) < readInThreshold)
-    {
-      bit1 = 0;
-    }
-    if(analogRead(fpga2) >= readInThreshold)
-    {
-      bit2 = 1;
-    }
-    if(analogRead(fpga2) < readInThreshold)
-    {
-      bit2 = 0;
-    }
+    bit0 = (analogRead(fpga0) >= readInThreshold);
+    bit1 = (analogRead(fpga1) >= readInThreshold);
+    bit2 = (analogRead(fpga2) >= readInThreshold);
+
   }
 
   digit = ((4*bit2) + (2*bit1) + bit0);
-  if(digit == 0)
+  if(digit == 0 && rdyIsHigh == 1)
   {
     lcd.clear();
     counter = 0;
   }
-  if(digit >= 1 && digit <=6 && analogRead(rdy) >= readInThreshold && rdyIsHigh == 1)
+  if(digit >= 1 && digit <=6 && rdyIsHigh == 1)
   {
     lcd.setCursor(counter, 0);
     lcd.print(digit);
     counter++;
   }
-  
+
 
 //  lcd.print(x);
 //  delay(3000);

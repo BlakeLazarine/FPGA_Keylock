@@ -16,10 +16,7 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut, active);
     /* always */
     always @ (posedge hwclk) begin
         if(enabled) begin
-//            if(!prevEnabled) begin
-  //              counter = 0;
-    //            complete = 0;
-      //      end
+
             if(num < 7) begin
                 out0 = num[0];
                 out1 = num[1];
@@ -32,23 +29,22 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut, active);
             end
             controlOut = (counter < holdTime);
 
-	    if(counter > holdTime*2) begin
+      	    if(counter > holdTime*2) begin
                 complete = 1;
-		active = 0;
+      		      active = 0;
             end
             else
                 active = 1;
             counter = counter + 1;
-	    
         end
-	else begin
+      	else begin
             counter = 0;
-	    complete = 0;
+      	    complete = 0;
             out0 = 0;
-	    out1 = 0;
-	    out2 = 0;
-	    controlOut = 0;
-	end
+      	    out1 = 0;
+      	    out2 = 0;
+      	    controlOut = 0;
+      	end
 //        prevEnabled = enabled;
     end
 endmodule
