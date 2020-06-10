@@ -16,6 +16,7 @@ module top (
     reg bstate;
     parameter [31:0] PC = 555116;
     reg [31:0] UC = 666666;
+    reg locked = 0;
 
     enterDigit dig(
         // input hardware clock (12 MHz)
@@ -73,10 +74,13 @@ module top (
       .doneSend(doneSend)
     );
 
-    multisend mult(.hwclk(hwclk), .num(PC), .enabled(sendSecret), .out0(led6), .out1(led7), .out2(led8), .controlOut(led5), .done(doneSend));
-
+    reg multout0, multout1, multout2, multoutcontrol;
+    wire ableToSend = sendSecret & !locked;
+    multisend mult(.hwclk(hwclk), .num(PC), .enabled(ableToSend), .out0(multout0), .out1(multout1), .out2(multout2), .controlOut(multoutcontrol), .done(doneSend));
+    
+    assign led1 = locked;
     always @ (posedge toggleLED1) begin
-        led1 = !led1;
+        locked = !locked;
     end
 
     reg [31:0] maybeNewUC = 0;
@@ -90,9 +94,10 @@ module top (
     reg [7:0] count = 0;
 
     reg enableSender = 0;
-    reg doneSending;
-    sender send (.hwclk(hwclk), .num(button), .enabled(enableSender), .done(doneSending),
-        .out0(ardu0), .out1(ardu1), .out2(ardu2), .controlOut(arduControl));
+    reg sendout0, sendout1, sendout2, sendoutcontrol, active;
+    
+    sender send (.hwclk(hwclk), .num(button), .enabled(enableSender),
+        .out0(sendout0), .out1(sendout1), .out2(sendout2), .controlOut(sendoutcontrol), .active(active));
 
     //led8 = 0;
     always @ (posedge hwclk) begin
@@ -106,8 +111,6 @@ module top (
         else
             compareReg = (checkUC) ? UC : ((checkPC) ? PC : maybeNewUC);
 
-
-
         if(error) begin
             ontime = 12000000;
             offtime = 6000000;
@@ -120,7 +123,7 @@ module top (
             patternOn = 1;
 
             UC <= maybeNewUC;
-            //maybeNewUC = 0;
+
         end
         else
             patternOn = 0;
@@ -129,13 +132,20 @@ module top (
 
         led3 = openLED3 & ((error|chillin) ? patternBright : 1);
 
-        enableSender = (rdy) ? 1 : !doneSending;
-        
-//	led4 = sendSecret;
+        enableSender = (rdy) ? 1 : active;
+	
+        led6 = (ableToSend) ? multout0 : sendout0;
+        led7 = (ableToSend) ? multout1 : sendout1;
+        led8 = (ableToSend) ? multout2 : sendout2;
+        led5 = (ableToSend) ? multoutcontrol : sendoutcontrol;
+
+        ardu0 = (ableToSend) ? multout0 : sendout0;
+        ardu1 = (ableToSend) ? multout1 : sendout1;
+        ardu2 = (ableToSend) ? multout2 : sendout2;
+        arduControl = (ableToSend) ? multoutcontrol : sendoutcontrol;
+
+
+
 
     end
-
-//    always @(posedge sendSecret) begin
-  //      led4 = !led4;
-    //end
 endmodule

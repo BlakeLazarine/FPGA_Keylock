@@ -1,10 +1,11 @@
-module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
+module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut, active);
     /* I/O */
     input hwclk;
     input [3:0] num;
     input enabled;
     output out0, out1, out2, controlOut;
     output done;
+    output active;
 
     parameter holdTime = 1200000; //1/10 second
     /* Counter register */
@@ -31,10 +32,14 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
             end
             controlOut = (counter < holdTime);
 
-            if(counter > holdTime*2)
+	    if(counter > holdTime*2) begin
                 complete = 1;
-
+		active = 0;
+            end
+            else
+                active = 1;
             counter = counter + 1;
+	    
         end
 	else begin
             counter = 0;
