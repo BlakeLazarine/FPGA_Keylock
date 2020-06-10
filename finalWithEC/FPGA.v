@@ -1,6 +1,6 @@
-// Created by fizzim.pl version 5.20 on 2020:06:08 at 15:50:50 (www.fizzim.com)
+// Created by fizzim.pl version 5.20 on 2020:06:09 at 18:46:25 (www.fizzim.com)
 
-// Warning T20: 9 bits specified as type "reg".  Type "reg" means they will be included in the state encoding.  With so many bits, this might take a very long time and/or consume large amounts of memory.  Consider converting some of them to type "regdp" or type "flag".  To suppress this message in the future, use "-nowarn T20"
+// Warning T20: 10 bits specified as type "reg".  Type "reg" means they will be included in the state encoding.  With so many bits, this might take a very long time and/or consume large amounts of memory.  Consider converting some of them to type "regdp" or type "flag".  To suppress this message in the future, use "-nowarn T20"
 module controller (
   output wire CheckPC,
   output wire CheckValidUC,
@@ -11,9 +11,11 @@ module controller (
   output wire ToggleLED1,
   output wire confirmUC,
   output wire error,
+  output wire sendSecret,
   input wire DoneBlink,
   input wire ValidUC,
   input wire clk,
+  input wire doneSend,
   input wire [3:0] keypress,
   input wire match,
   input wire rdy,
@@ -22,18 +24,19 @@ module controller (
 
   // state bits
   parameter
-  START            = 9'b000000000, // error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=0 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
-  BadLock          = 9'b100001000, // error=1 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=0 LED2=1 Chillin=0 CheckValidUC=0 CheckPC=0
-  BadRepro         = 9'b100010000, // error=1 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
-  LockingUnlocking = 9'b000101000, // error=0 confirmUC=0 ToggleLED1=0 LOCKING=1 LED3=0 LED2=1 Chillin=0 CheckValidUC=0 CheckPC=0
-  ReproPhase1      = 9'b000010001, // error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=1
-  ReproPhase2      = 9'b000010010, // error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=1 CheckPC=0
-  ReproPhase3      = 9'b010010000, // error=0 confirmUC=1 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
-  SUCCESS          = 9'b000010100, // error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=1 CheckValidUC=0 CheckPC=0
-  correctUC        = 9'b001000000; // error=0 confirmUC=0 ToggleLED1=1 LOCKING=0 LED3=0 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
+  START            = 10'b0000000000, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=0 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
+  BadLock          = 10'b0100001000, // sendSecret=0 error=1 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=0 LED2=1 Chillin=0 CheckValidUC=0 CheckPC=0
+  BadRepro         = 10'b0100010000, // sendSecret=0 error=1 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
+  LockingUnlocking = 10'b0000101000, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=0 LOCKING=1 LED3=0 LED2=1 Chillin=0 CheckValidUC=0 CheckPC=0
+  ReproPhase1      = 10'b0000010001, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=1
+  ReproPhase2      = 10'b0000010010, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=1 CheckPC=0
+  ReproPhase3      = 10'b0010010000, // sendSecret=0 error=0 confirmUC=1 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
+  SUCCESS          = 10'b0000010100, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=1 LED2=0 Chillin=1 CheckValidUC=0 CheckPC=0
+  correctUC        = 10'b0001000000, // sendSecret=0 error=0 confirmUC=0 ToggleLED1=1 LOCKING=0 LED3=0 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
+  printOut         = 10'b1000000000; // sendSecret=1 error=0 confirmUC=0 ToggleLED1=0 LOCKING=0 LED3=0 LED2=0 Chillin=0 CheckValidUC=0 CheckPC=0
 
-  reg [8:0] state;
-  reg [8:0] nextstate;
+  reg [9:0] state;
+  reg [9:0] nextstate;
 
   // comb always block
   always @* begin
@@ -42,9 +45,13 @@ module controller (
     case (state)
       START           : begin
         // Warning P3: State START has multiple exit transitions, and transition trans0 has no defined priority
+        // Warning P3: State START has multiple exit transitions, and transition trans32 has no defined priority
         // Warning P3: State START has multiple exit transitions, and transition trans8 has no defined priority
         if (rdy&(keypress==9)) begin
           nextstate = LockingUnlocking;
+        end
+        else if (rdy&(keypress==7)) begin
+          nextstate = printOut;
         end
         else if (rdy&(keypress==8)) begin
           nextstate = ReproPhase1;
@@ -140,6 +147,14 @@ module controller (
           nextstate = START;
         end
       end
+      printOut        : begin
+        if (!doneSend) begin
+          nextstate = printOut;
+        end
+        else begin
+          nextstate = START;
+        end
+      end
     endcase
   end
 
@@ -153,6 +168,7 @@ module controller (
   assign ToggleLED1 = state[6];
   assign confirmUC = state[7];
   assign error = state[8];
+  assign sendSecret = state[9];
 
   // sequential always block
   always @(posedge clk or negedge resetN) begin
@@ -185,6 +201,8 @@ module controller (
         statename = "SUCCESS";
       correctUC       :
         statename = "correctUC";
+      printOut        :
+        statename = "printOut";
       default         :
         statename = "XXXXXXXXXXXXXXXX";
     endcase

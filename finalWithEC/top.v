@@ -38,15 +38,19 @@ module top (
     reg [31:0] ontime, offtime;
     reg [7:0] patternReps;
     reg patternOn = 0;
-    reg patternBright, patternDone;
+    reg patternBright, patternDone, doneSend;
     pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime),
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
-    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match;
+
+
+
+    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match, sendSecret;
     reg ValidUC, confirmUC;
     reg reset = 1;
     reg prevBState = 0;
     wire rdy = bstate & !prevBState;
+
 
     controller control (
       .CheckPC(checkPC),
@@ -64,8 +68,12 @@ module top (
       .match(match),
       .rdy(rdy), //do tests to see if bstate is high for only 1 clock cycle
       .resetN(reset),
-      .confirmUC(confirmUC)
+      .confirmUC(confirmUC),
+      .sendSecret(sendSecret),
+      .doneSend(doneSend)
     );
+
+    multisend mult(.hwclk(hwclk), .num(PC), .enabled(sendSecret), .out0(led6), .out1(led7), .out2(led8), .controlOut(led5), .done(doneSend));
 
     always @ (posedge toggleLED1) begin
         led1 = !led1;
@@ -97,7 +105,7 @@ module top (
             maybeNewUC = typed;
         else
             compareReg = (checkUC) ? UC : ((checkPC) ? PC : maybeNewUC);
-        
+
 
 
         if(error) begin

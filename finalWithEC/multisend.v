@@ -20,8 +20,7 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
         .out0(out0), .out1(out1), .out2(out2), .controlOut(controlOut));
 
     reg prevEnabled = 0;
-    reg [29:0] numbers = 0;
-    reg [31:0] tempNum = 10;
+    reg [17:0] numbers = 0;
     /* always */
     reg [31:0] i = 0;
 
@@ -30,21 +29,37 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
     always @ (posedge hwclk) begin
         if(enabled) begin
             if(!prevEnabled) begin
-                tempNum = 10;
-                int idx = 0;
-                for(idx = 0; idx < 6; idx = idx + 1) begin
-                    int localNum = num % tempNum;
-                    numbers[3 * i] = localNum[0];
-                    numbers[3 * i + 1] = localNum[1];
-                    numbers[3 * i + 2] = localNum[2];
-                    tempNum = tempNum * 10;
-                end
+
+                numbers[15] = (num % 10)[0];
+                numbers[16] = (num % 10)[1];
+                numbers[17] = (num % 10)[2];
+
+                numbers[12] = (num % 100)[0];
+                numbers[13] = (num % 100)[1];
+                numbers[14] = (num % 100)[2];
+
+                numbers[9] = (num % 1000)[0];
+                numbers[10] = (num % 1000)[1];
+                numbers[11] = (num % 1000)[2];
+
+                numbers[6] = (num % 10000)[0];
+                numbers[7] = (num % 10000)[1];
+                numbers[8] = (num % 10000)[2];
+
+                numbers[3] = (num % 100000)[0];
+                numbers[4] = (num % 100000)[1];
+                numbers[5] = (num % 100000)[2];
+
+                numbers[0] = (num % 1000000)[0];
+                numbers[1] = (num % 1000000)[1];
+                numbers[2] = (num % 1000000)[2];
+
                 i <= 0;
                 ch <= 0;
                 rdy <= 1;
-		complete <= 0;
+                complete <= 0;
             end
-            else
+            else if(!completed)
                 rdy = prevDoneSending;
 
             enableSender = (rdy) ? 1 : !doneSending;
