@@ -9,16 +9,16 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
     parameter holdTime = 1200000; //1/10 second
     /* Counter register */
     reg [31:0] counter = 32'b0;
-    reg prevEnabled = 0;
+//    reg prevEnabled = 0;
     reg complete = 0;
     assign done = complete;
     /* always */
     always @ (posedge hwclk) begin
         if(enabled) begin
-            if(!prevEnabled) begin
-                counter = 0;
-                complete = 0;
-            end
+//            if(!prevEnabled) begin
+  //              counter = 0;
+    //            complete = 0;
+      //      end
             if(num < 7) begin
                 out0 = num[0];
                 out1 = num[1];
@@ -29,13 +29,21 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
                 out1 = 0;
                 out2 = 0;
             end
-            controlOut = enabled & (counter < holdTime);
+            controlOut = (counter < holdTime);
 
             if(counter > holdTime*2)
                 complete = 1;
 
             counter = counter + 1;
         end
-        prevEnabled = enabled;
+	else begin
+            counter = 0;
+	    complete = 0;
+            out0 = 0;
+	    out1 = 0;
+	    out2 = 0;
+	    controlOut = 0;
+	end
+//        prevEnabled = enabled;
     end
 endmodule

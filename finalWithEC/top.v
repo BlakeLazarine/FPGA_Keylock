@@ -135,7 +135,7 @@ module top (
 
     end
 
-    always @(posedge sendSecret) begin
-        led4 = !led4;
-    end
+//    always @(posedge sendSecret) begin
+  //      led4 = !led4;
+    //end
 endmodule

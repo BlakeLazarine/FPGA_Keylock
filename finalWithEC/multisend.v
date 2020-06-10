@@ -41,14 +41,17 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
                 rdy = prevDoneSending & doneSending;
 
                 enableSender = (rdy) ? 1 : !doneSending;
-                if(doneSending) begin
-                    ch[0] = numbers[3 * i];
+                if(doneSending & !prevDoneSending) begin
+  		//	ch[0] = i[0];
+      		//	ch[1] = i[1];
+		//	ch[2] = i[2];			
+		    ch[0] = numbers[3 * i];
                     ch[1] = numbers[3 * i + 1];
                     ch[2] = numbers[3 * i + 2];
 
                     i <= i+1;
                 end
-	        if(i == 5) begin
+	        if(i == 7) begin
                     completed = 1;
 		    prevDoneSending = 0;
 		    doneSendingReg = 0;
