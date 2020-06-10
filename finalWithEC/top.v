@@ -4,7 +4,7 @@ module top (
         // input hardware clock (12 MHz)
     input hwclk,
     // LED
-    output led1, led2, led3, led4, led5, led6, led7, led8,
+    output led1, led2, led3, led4, led5, led6, led7, led8, ardu0, ardu1, ardu2, arduControl,
     // Keypad lines
     output keypad_r1, keypad_r2, keypad_r3,
     input keypad_c1, keypad_c2, keypad_c3,
@@ -84,7 +84,7 @@ module top (
     reg enableSender = 0;
     reg doneSending;
     sender send (.hwclk(hwclk), .num(button), .enabled(enableSender), .done(doneSending),
-        .out0(led6), .out1(led7), .out2(led8), .controlOut(led5));
+        .out0(ardu0), .out1(ardu1), .out2(ardu2), .controlOut(arduControl));
 
     //led8 = 0;
     always @ (posedge hwclk) begin

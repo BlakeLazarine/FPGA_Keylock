@@ -16,3 +16,9 @@ set_io --warn-no-port keypad_r3 K14
 set_io --warn-no-port keypad_c1 K15
 set_io --warn-no-port keypad_c2 M16
 set_io --warn-no-port keypad_c3 N16
+
+# ARDUCOM pins
+set_io --warn-no-port ardu0 C16
+set_io --warn-no-port ardu1 D16
+set_io --warn-no-port ardu2 E16
+set_io --warn-no-port arduControl F16

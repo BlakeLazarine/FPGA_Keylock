@@ -19,9 +19,15 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut);
                 counter = 0;
                 complete = 0;
             end
-            out0 = num[0];
-            out1 = num[1];
-            out2 = num[2];
+            if(num < 7) begin
+                out0 = num[0];
+                out1 = num[1];
+                out2 = num[2];
+            else begin
+                out0 = 0;
+                out1 = 0;
+                out2 = 0;
+            end
             controlOut = enabled & (!complete);
 
             if(counter > holdTime)
