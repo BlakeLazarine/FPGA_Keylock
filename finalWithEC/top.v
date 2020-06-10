@@ -39,17 +39,18 @@ module top (
     reg [31:0] ontime, offtime;
     reg [7:0] patternReps;
     reg patternOn = 0;
-    reg patternBright, patternDone, doneSend;
+    reg patternBright, patternDone;
     pattern pat(.hwclk(hwclk), .ontime(ontime), .offtime(offtime),
       .reps(patternReps), .done(patternDone), .enable(patternOn), .bright(patternBright));
 
 
 
 
-    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match, sendSecret;
+    reg checkPC, checkUC, checkValidUC, chillin, toggleLED1, openLED2, openLED3, error, match, sendSecret, doneSend;
     reg ValidUC, confirmUC;
     reg reset = 1;
     reg prevBState = 0;
+    wire doneSendReg = doneSend | locked;
     wire rdy = bstate & !prevBState;
 
 
@@ -71,7 +72,7 @@ module top (
       .resetN(reset),
       .confirmUC(confirmUC),
       .sendSecret(sendSecret),
-      .doneSend(doneSend)
+      .doneSend(doneSendReg)
     );
 
     reg multout0, multout1, multout2, multoutcontrol;
