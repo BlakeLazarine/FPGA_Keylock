@@ -16,59 +16,77 @@ module top (hwclk, led1, led2, led3, led4, led5, led6, led7, led8, buzz);
 
     reg [15:0] halfperiod = 0000;
     reg [15:0] runthroughs = 0000;
-    parameter [2847:0] clocks = 2848'h6a885ee3cfc0549cb9405ee3dc804fb84fb84fb84fb800c000005ee3549cdc804fb8cfc0549cf780470547054705470500c000006a885ee3cfc0549cb9405ee3dc804fb84fb84fb84fb800c000005ee3549cdc804fb8cfc0549cf7804705470547054705a5006a88cfc0549c8ac07eb0a5006a88cfc0549c8ac07eb0a5006a88cfc0549cb9405ee3dc804fb88ac07eb0b9405ee3dc804fb88ac07eb0b9405ee3dc804fb8b9405ee3dc804fb88ac07eb0b9405ee3dc804fb88ac07eb0b9405ee3dc804fb8b9405ee3f78047059c0070aeb9405ee3f78047059c0070aeb9405ee3f7804705a5006a88cfc0549c8ac07eb0a5006a88cfc0549c8ac07eb0a5006a88cfc0549cb9405ee3dc804fb88ac07eb0b9405ee3dc804fb88ac07eb0b9405ee3dc804fb8b9405ee3dc804fb88ac07eb0b9405ee3dc804fb88ac07eb0b9405ee3dc804fb8b9405ee3f78047059c0070aeb9405ee3f78047059c0070aeb9405ee3f7804705;
+//    parameter [191:0] clocks = 192'h9c0070aeb9405ee3f78047059c0070ae0b945ee30f784705;
     parameter clockslen = 32;
     reg [4:0] i = 0;
     reg [15:0] completedCycles = 0000;
     /* always */
     always @ (posedge hwclk) begin
+	    /*
         buzz = (halfperiod == 0) ? 0 : counter < halfperiod;
     	if(counter > 2 * halfperiod) begin
-            if(i == 32)
+	   
+//	    led2 = (i==2);
+	    led3 = (i==3);
+            led4 = (i==4);
+            led5 = (i==5);
+            led6 = (i==6);
+
+            if(i == 5)
                 i <= 0;
             else if(completedCycles > runthroughs) begin
-        		halfperiod[0] <= [32 * i];
-                halfperiod[1] <= [32 * i + 1];
-                halfperiod[2] <= [32 * i + 2];
-                halfperiod[3] <= [32 * i + 3];
-                halfperiod[4] <= [32 * i + 4];
-                halfperiod[5] <= [32 * i + 5];
-                halfperiod[6] <= [32 * i + 6];
-                halfperiod[7] <= [32 * i + 7];
-                halfperiod[8] <= [32 * i + 8];
-                halfperiod[9] <= [32 * i + 9];
-                halfperiod[10] <= [32 * i + 10];
-                halfperiod[11] <= [32 * i + 11];
-                halfperiod[12] <= [32 * i + 12];
-                halfperiod[13] <= [32 * i + 13];
-                halfperiod[14] <= [32 * i + 14];
-                halfperiod[15] <= [32 * i + 15];
+        		halfperiod[0] <= clocks[32 * i];
+                halfperiod[1] <= clocks[32 * i + 1];
+                halfperiod[2] <= clocks[32 * i + 2];
+                halfperiod[3] <= clocks[32 * i + 3];
+                halfperiod[4] <= clocks[32 * i + 4];
+                halfperiod[5] <= clocks[32 * i + 5];
+                halfperiod[6] <= clocks[32 * i + 6];
+                halfperiod[7] <= clocks[32 * i + 7];
+                halfperiod[8] <= clocks[32 * i + 8];
+                halfperiod[9] <= clocks[32 * i + 9];
+                halfperiod[10] <= clocks[32 * i + 10];
+                halfperiod[11] <= clocks[32 * i + 11];
+                halfperiod[12] <= clocks[32 * i + 12];
+                halfperiod[13] <= clocks[32 * i + 13];
+                halfperiod[14] <= clocks[32 * i + 14];
+                halfperiod[15] <= clocks[32 * i + 15];
 
-                runthroughs[0] <= [32 * i];
-                runthroughs[1] <= [32 * i + 1];
-                runthroughs[2] <= [32 * i + 2];
-                runthroughs[3] <= [32 * i + 3];
-                runthroughs[4] <= [32 * i + 4];
-                runthroughs[5] <= [32 * i + 5];
-                runthroughs[6] <= [32 * i + 6];
-                runthroughs[7] <= [32 * i + 7];
-                runthroughs[8] <= [32 * i + 8];
-                runthroughs[9] <= [32 * i + 9];
-                runthroughs[10] <= [32 * i + 10];
-                runthroughs[11] <= [32 * i + 11];
-                runthroughs[12] <= [32 * i + 12];
-                runthroughs[13] <= [32 * i + 13];
-                runthroughs[14] <= [32 * i + 14];
-                runthroughs[15] <= [32 * i + 15];
-
+                runthroughs[0] <= clocks[32 * i + 16];
+                runthroughs[1] <= clocks[32 * i + 17];
+                runthroughs[2] <= clocks[32 * i + 18];
+                runthroughs[3] <= clocks[32 * i + 19];
+                runthroughs[4] <= clocks[32 * i + 20];
+                runthroughs[5] <= clocks[32 * i + 21];
+                runthroughs[6] <= clocks[32 * i + 22];
+                runthroughs[7] <= clocks[32 * i + 23];
+                runthroughs[8] <= clocks[32 * i + 24];
+                runthroughs[9] <= clocks[32 * i + 25];
+                runthroughs[10] <= clocks[32 * i + 26];
+                runthroughs[11] <= clocks[32 * i + 27];
+                runthroughs[12] <= clocks[32 * i + 28];
+                runthroughs[13] <= clocks[32 * i + 29];
+                runthroughs[14] <= clocks[32 * i + 30];
+                runthroughs[15] <= clocks[32 * i + 31];
+led7 = !led7;
                 i <= i + 1;
                 completedCycles <= 0;
             end
-    		counter <= 0;
-
+	    else begin
+                counter <= 0;
+	        completedCycles <= completedCycles + 1;
+		led8 = !led8;
+	    end
     	end
-        else
+	else begin
 		counter <= counter + 1;
+		led1 = !led1;
+	end
+	led2 = (runthroughs == 63360);*/
+       if(counter[10])
+	       buzz = !buzz;
+       counter <= counter + 1;
+       
     end
 
 endmodule
