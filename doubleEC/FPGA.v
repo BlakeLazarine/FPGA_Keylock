@@ -1,4 +1,4 @@
-// Created by fizzim.pl version 5.20 on 2020:06:09 at 18:46:25 (www.fizzim.com)
+// Created by fizzim.pl version 5.20 on 2020:06:12 at 15:14:45 (www.fizzim.com)
 
 // Warning T20: 10 bits specified as type "reg".  Type "reg" means they will be included in the state encoding.  With so many bits, this might take a very long time and/or consume large amounts of memory.  Consider converting some of them to type "regdp" or type "flag".  To suppress this message in the future, use "-nowarn T20"
 module controller (
@@ -77,18 +77,18 @@ module controller (
         end
       end
       LockingUnlocking: begin
-        // Warning P3: State LockingUnlocking has multiple exit transitions, and transition trans13 has no defined priority
         // Warning P3: State LockingUnlocking has multiple exit transitions, and transition trans2 has no defined priority
         // Warning P3: State LockingUnlocking has multiple exit transitions, and transition trans3 has no defined priority
+        // Warning P3: State LockingUnlocking has multiple exit transitions, and transition trans35 has no defined priority
         // Warning P3: State LockingUnlocking has multiple exit transitions, and transition trans4 has no defined priority
-        if (rdy&(keypress==7)) begin
-          nextstate = BadLock;
-        end
-        else if (!rdy | (keypress !=7 & keypress != 9)) begin
+        if (!rdy | (keypress !=7 & keypress != 9)) begin
           nextstate = LockingUnlocking;
         end
         else if (rdy & (keypress == 9) & match) begin
           nextstate = correctUC;
+        end
+        else if (rdy & (keypress ==7)) begin
+          nextstate = BadRepro;
         end
         else if (rdy & (keypress == 9) & !match) begin
           nextstate = BadLock;
