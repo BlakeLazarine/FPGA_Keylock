@@ -29,7 +29,7 @@ module keyList (
 
     always @ (posedge hwclk) begin
         if(button_pressed & !buttonWasPressed & enable)
-            current <= ((key < 7) & (key > 0)) ? ((current < 666667) ? 10 * current + key : current) : current;
+            current <= ((key < 7) & (key > 0)) ? ((current < 666667) ? 10 * current + key : current) : 9999999;
         else if(!enable)
             current = 0;
         buttonWasPressed = button_pressed;

@@ -131,11 +131,11 @@ module top (
 
         enableSender = (rdy) ? 1 : active;
 
-        led6 = (ableToSend) ? multout0 : sendout0;
+        /*led6 = (ableToSend) ? multout0 : sendout0;
         led7 = (ableToSend) ? multout1 : sendout1;
         led8 = (ableToSend) ? multout2 : sendout2;
         led5 = (ableToSend) ? multoutcontrol : sendoutcontrol;
-
+*/
         ardu0 = (ableToSend) ? multout0 : sendout0;
         ardu1 = (ableToSend) ? multout1 : sendout1;
         ardu2 = (ableToSend) ? multout2 : sendout2;
