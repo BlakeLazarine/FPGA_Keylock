@@ -14,7 +14,6 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut, active, 
 //    reg prevEnabled = 0;
     reg complete = 0;
     assign done = complete;
-    assign buzz = controlOut & counter[num + 9];
     /* always */
     always @ (posedge hwclk) begin
         if(enabled) begin
@@ -30,7 +29,8 @@ module sender (hwclk, num, enabled, done, out0, out1, out2, controlOut, active, 
                 out2 = 0;
             end
             controlOut = (counter < holdTime);
-
+            buzz = controlOut & counter[num + 9];
+    
       	    if(counter > holdTime*2) begin
                 complete = 1;
       		      active = 0;

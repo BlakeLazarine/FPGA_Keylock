@@ -91,10 +91,10 @@ module top (
     reg [7:0] count = 0;
 
     reg enableSender = 0;
-    reg sendout0, sendout1, sendout2, sendoutcontrol, active;
+    reg sendout0, sendout1, sendout2, sendoutcontrol, active, buzzreg;
 
     sender send (.hwclk(hwclk), .num(button), .enabled(enableSender),
-        .out0(sendout0), .out1(sendout1), .out2(sendout2), .controlOut(sendoutcontrol), .active(active) .buzz(buzz));
+        .out0(sendout0), .out1(sendout1), .out2(sendout2), .controlOut(sendoutcontrol), .active(active), .buzz(buzzreg));
 
     //led8 = 0;
     always @ (posedge hwclk) begin
@@ -128,7 +128,8 @@ module top (
         led2 = openLED2 & ((error) ? patternBright : 1);
 
         led3 = openLED3 & ((error|chillin) ? patternBright : 1);
-
+        
+	buzz = (error & locked & openLED2 & patternBright) | buzzreg;
         enableSender = (rdy) ? 1 : active;
 
         /*led6 = (ableToSend) ? multout0 : sendout0;
