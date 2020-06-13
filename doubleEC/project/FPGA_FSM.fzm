@@ -1,4 +1,4 @@
-## File last modified by Fizzim: 3:13:33 PM on 6/12/20
+## File last modified by Fizzim: 5:11:30 PM on 6/12/20
 <version>
    14.02.26
 </version>
@@ -7470,16 +7470,16 @@ fzm_globalTable
       </sendSecret>
    </attributes>
    <x0>
-   310
+   316
    </x0>
    <y0>
-   438
+   506
    </y0>
    <x1>
-   440
+   446
    </x1>
    <y1>
-   568
+   636
    </y1>
    <reset>
    false
@@ -7781,10 +7781,10 @@ fzm_globalTable
    334.0
    </startPtY>
    <endPtX>
-   375.0
+   381.0
    </endPtX>
    <endPtY>
-   438.0
+   506.0
    </endPtY>
    <startCtrlPtX>
    374.0
@@ -7793,10 +7793,10 @@ fzm_globalTable
    365.0
    </startCtrlPtY>
    <endCtrlPtY>
-   379.0
+   385.0
    </endCtrlPtY>
    <endCtrlPtY>
-   399.0
+   467.0
    </endCtrlPtY>
    <startStateIndex>
    9
@@ -8460,16 +8460,16 @@ fzm_globalTable
       </sendSecret>
    </attributes>
    <x0>
-   322
+   320
    </x0>
    <y0>
-   656
+   701
    </y0>
    <x1>
-   452
+   450
    </x1>
    <y1>
-   786
+   831
    </y1>
    <reset>
    false
@@ -8605,28 +8605,28 @@ fzm_globalTable
    ReproPhase3
    </endState>
    <startPtX>
-   386.0
+   392.0
    </startPtX>
    <startPtY>
-   567.0
+   635.0
    </startPtY>
    <endPtX>
-   387.0
+   385.0
    </endPtX>
    <endPtY>
-   656.0
+   701.0
    </endPtY>
    <startCtrlPtX>
-   386.0
+   392.0
    </startCtrlPtX>
    <startCtrlPtY>
-   594.0
+   662.0
    </startCtrlPtY>
    <endCtrlPtY>
-   387.0
+   385.0
    </endCtrlPtY>
    <endCtrlPtY>
-   627.0
+   672.0
    </endCtrlPtY>
    <startStateIndex>
    8
@@ -9418,10 +9418,10 @@ fzm_globalTable
             </status>
          </resetval>
          <x2Obj>
-         13
+         -10
          </x2Obj>
          <y2Obj>
-         -5
+         37
          </y2Obj>
          <page>
          2
@@ -9435,10 +9435,10 @@ fzm_globalTable
    SUCCESS
    </endState>
    <startPtX>
-   448.0
+   446.0
    </startPtX>
    <startPtY>
-   743.0
+   788.0
    </startPtY>
    <endPtX>
    641.0
@@ -9447,16 +9447,16 @@ fzm_globalTable
    754.0
    </endPtY>
    <startCtrlPtX>
-   521.0
+   519.0
    </startCtrlPtX>
    <startCtrlPtY>
-   750.0
+   795.0
    </startCtrlPtY>
    <endCtrlPtY>
-   590.0
+   603.0
    </endCtrlPtY>
    <endCtrlPtY>
-   752.0
+   770.0
    </endCtrlPtY>
    <startStateIndex>
    2
@@ -9605,10 +9605,10 @@ fzm_globalTable
             </status>
          </resetval>
          <x2Obj>
-         0
+         7
          </x2Obj>
          <y2Obj>
-         0
+         -8
          </y2Obj>
          <page>
          2
@@ -9622,28 +9622,28 @@ fzm_globalTable
    ReproPhase2
    </endState>
    <startPtX>
-   318.0
+   324.0
    </startPtX>
    <startPtY>
-   535.0
+   603.0
    </startPtY>
    <endPtX>
-   313.0
+   319.0
    </endPtX>
    <endPtY>
-   480.0
+   548.0
    </endPtY>
    <startCtrlPtX>
-   248.0
+   254.0
    </startCtrlPtX>
    <startCtrlPtY>
-   577.0
+   645.0
    </startCtrlPtY>
    <endCtrlPtY>
-   240.0
+   246.0
    </endCtrlPtY>
    <endCtrlPtY>
-   451.0
+   519.0
    </endCtrlPtY>
    <startStateIndex>
    15
@@ -9782,28 +9782,28 @@ fzm_globalTable
    ReproPhase3
    </endState>
    <startPtX>
-   330.0
+   328.0
    </startPtX>
    <startPtY>
-   753.0
+   798.0
    </startPtY>
    <endPtX>
-   325.0
+   323.0
    </endPtX>
    <endPtY>
-   698.0
+   743.0
    </endPtY>
    <startCtrlPtX>
-   257.0
+   255.0
    </startCtrlPtX>
    <startCtrlPtY>
-   794.0
+   839.0
    </startCtrlPtY>
    <endCtrlPtY>
-   252.0
+   250.0
    </endCtrlPtY>
    <endCtrlPtY>
-   669.0
+   714.0
    </endCtrlPtY>
    <startStateIndex>
    15
@@ -10440,7 +10440,7 @@ fzm_globalTable
       </sendSecret>
    </attributes>
    <x0>
-   713
+   714
    </x0>
    <y0>
    414
@@ -10568,10 +10568,10 @@ fzm_globalTable
             </status>
          </resetval>
          <x2Obj>
-         57
+         144
          </x2Obj>
          <y2Obj>
-         74
+         8
          </y2Obj>
          <page>
          2
@@ -10585,34 +10585,34 @@ fzm_globalTable
    BadRepro
    </endState>
    <startPtX>
-   448.0
+   446.0
    </startPtX>
    <startPtY>
-   698.0
+   743.0
    </startPtY>
    <endPtX>
-   721.0
+   766.0
    </endPtX>
    <endPtY>
-   511.0
+   543.0
    </endPtY>
    <startCtrlPtX>
-   506.0
+   504.0
    </startCtrlPtX>
    <startCtrlPtY>
-   682.0
+   727.0
    </startCtrlPtY>
    <endCtrlPtY>
-   693.0
+   714.0
    </endCtrlPtY>
    <endCtrlPtY>
-   535.0
+   579.0
    </endCtrlPtY>
    <startStateIndex>
    34
    </startStateIndex>
    <endStateIndex>
-   15
+   10
    </endStateIndex>
    <page>
    2
@@ -10755,10 +10755,10 @@ fzm_globalTable
             </status>
          </resetval>
          <x2Obj>
-         -25
+         -13
          </x2Obj>
          <y2Obj>
-         -39
+         -13
          </y2Obj>
          <page>
          2
@@ -10772,34 +10772,34 @@ fzm_globalTable
    BadRepro
    </endState>
    <startPtX>
-   439.0
+   445.0
    </startPtX>
    <startPtY>
-   514.0
+   559.0
    </startPtY>
    <endPtX>
-   721.0
+   746.0
    </endPtX>
    <endPtY>
-   446.0
+   535.0
    </endPtY>
    <startCtrlPtX>
-   524.0
+   531.0
    </startCtrlPtX>
    <startCtrlPtY>
-   508.0
+   546.0
    </startCtrlPtY>
    <endCtrlPtY>
-   662.0
+   652.0
    </endCtrlPtY>
    <endCtrlPtY>
-   425.0
+   542.0
    </endCtrlPtY>
    <startStateIndex>
-   1
+   35
    </startStateIndex>
    <endStateIndex>
-   21
+   12
    </endStateIndex>
    <page>
    2
@@ -11146,7 +11146,7 @@ fzm_globalTable
    START
    </endState>
    <startPtX>
-   843.0
+   842.0
    </startPtX>
    <startPtY>
    479.0
@@ -11158,7 +11158,7 @@ fzm_globalTable
    536.0
    </endPtY>
    <startCtrlPtX>
-   863.0
+   862.0
    </startCtrlPtX>
    <startCtrlPtY>
    479.0
@@ -13023,7 +13023,7 @@ fzm_globalTable
    757.0
    </startPtY>
    <endPtX>
-   713.0
+   714.0
    </endPtX>
    <endPtY>
    479.0
@@ -13035,7 +13035,7 @@ fzm_globalTable
    757.0
    </startCtrlPtY>
    <endCtrlPtY>
-   693.0
+   694.0
    </endCtrlPtY>
    <endCtrlPtY>
    479.0
