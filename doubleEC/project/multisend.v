@@ -9,7 +9,7 @@ module multisend (hwclk, num, enabled, out0, out1, out2, controlOut, done);
     parameter holdTime = 1200000; //1/10 second
     /* Counter register */
     reg prevEnabled = 0;
-    reg complete = 0;
+    reg completed = 0;
     assign done = completed;
 
 
