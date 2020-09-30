@@ -4,3 +4,5 @@ Blake Lazarine and Sahil Dani's epic verilog-based locking system. UCLA ECE M16 
 Don't worry Mani this was private until the end of the class
 
 Most recent working version is in folder doubleEC
+
+Video of usage can be seen at https://www.youtube.com/watch?v=BDGqOc4rUuM
